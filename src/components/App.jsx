@@ -5,10 +5,19 @@ export class App extends Component {
   state = {
     contacts: [],
     name: '',
+    number: '',
   };
 
-  handleChange = event => {
-    this.setState({ name: event.target.value });
+  handleChangeName = event => {
+    this.setState({
+      name: event.target.value,
+    });
+  };
+
+  handleChangeNumber = event => {
+    this.setState({
+      number: event.target.value,
+    });
   };
 
   handleSubmit = event => {
@@ -16,11 +25,13 @@ export class App extends Component {
     const newContact = {
       id: nanoid(),
       name: this.state.name,
+      number: this.state.number,
     };
 
     this.setState(prevState => ({
       contacts: [...prevState.contacts, newContact],
       name: '',
+      number: '',
     }));
   };
 
@@ -38,7 +49,19 @@ export class App extends Component {
               title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
               required
               value={this.state.name}
-              onChange={this.handleChange}
+              onChange={this.handleChangeName}
+            />
+          </label>
+          <label>
+            Number
+            <input
+              type="tel"
+              name="number"
+              pattern="^\+?[0-9\s-()]*$"
+              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+              required
+              value={this.state.number}
+              onChange={this.handleChangeNumber}
             />
           </label>
           <button type="submit">Add contact</button>
@@ -46,7 +69,9 @@ export class App extends Component {
         <h2>Contacts</h2>
         <ul>
           {this.state.contacts.map(contact => (
-            <li key={contact.id}>{contact.name}</li>
+            <li key={contact.id}>
+              {contact.name}:{contact.number}
+            </li>
           ))}
         </ul>
       </div>
